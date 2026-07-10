@@ -1,0 +1,434 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+
+const steps = [
+  {
+    n: '01',
+    name: 'Scan',
+    blurb:
+      'Build an inventory by content hash (SHA-1, plus CRC32/MD5), so every file is identified by what it is, not what it happens to be called.',
+  },
+  {
+    n: '02',
+    name: 'Status',
+    blurb:
+      'Compare that inventory against your active DATs — accounting for headered ROMs (iNES, SMC, A78, LNX) and MAME merge modes — to see what you have, what’s missing, and what’s misnamed or duplicated.',
+  },
+  {
+    n: '03',
+    name: 'Plan & apply',
+    blurb:
+      'Propose copies, moves, repacks, and deletions as a reviewable plan. Nothing touches disk until you apply — transactionally, with a rollback log.',
+  },
+];
+
+const dats = ['No-Intro', 'Redump', 'MAME', 'FinalBurn Neo'];
+---
+
+<BaseLayout
+  title="Cat198x"
+  description="Cat198x catalogues, verifies, and reorganises retro software and media collections safely — DAT-matched by content hash, with a plan you review before anything moves and a rollback for everything applied."
+>
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Catalogue · verify · reorganise</p>
+          <h1>Cat198x</h1>
+          <p class="lede">
+            Know exactly what's in your retro collection, and reorganise it
+            without fear. Cat198x matches your files against the reference DATs
+            by content hash, shows what you have and what's missing, and moves
+            nothing until you approve the plan &mdash; <em>Terraform for ROMs</em>.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="#install">Get the binary</a>{' '}
+            <a class="button secondary" href="#how">How it works</a>{' '}
+            <a class="button secondary" href="https://github.com/cat198x/cat198x">GitHub</a>
+          </div>
+        </div>
+
+        <div class="terminal" aria-label="Example cat198x session">
+          <div class="terminal-bar" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <pre><code><span class="c">$</span> cat198x scan
+<span class="c">$</span> cat198x status "Nintendo - Game Boy"
+
+<span class="o">Nintendo - Game Boy  v20240315  [83.7% complete]</span>
+  1412 games, 1412 ROMs required
+  <span class="o">1182 have</span>, <span class="w">230 missing</span></code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="why" class="container why" aria-label="Why Cat198x">
+      <header class="section-head">
+        <p class="eyebrow">Why</p>
+        <h2>Separate knowing from changing.</h2>
+        <p class="section-lede">
+          Retro collections drift. Files get renamed, re-compressed,
+          half-downloaded, and duplicated across drives, and the reference DATs
+          that define a &ldquo;correct&rdquo; set keep changing too. Most tools
+          either mutate files in place with no safety net or assume one rigid
+          layout. Cat198x keeps the two jobs apart: it tells you the truth about
+          your collection first, and only reorganises when you say so &mdash;
+          transactionally, with nothing ever silently lost.
+        </p>
+      </header>
+    </section>
+
+    <section id="how" class="container how" aria-label="How it works">
+      <header class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2>Scan, status, then a plan you can read.</h2>
+      </header>
+      <div class="step-grid">
+        {steps.map((step) => (
+          <article class="step">
+            <p class="step-n">{step.n}</p>
+            <h3>{step.name}</h3>
+            <p>{step.blurb}</p>
+          </article>
+        ))}
+      </div>
+      <p class="dats-line">
+        Verifies against the reference databases you already use:
+        <span class="chips">
+          {dats.map((d) => <span class="chip">{d}</span>)}
+        </span>
+      </p>
+    </section>
+
+    <section id="install" class="install-band">
+      <div class="container install-grid">
+        <div>
+          <p class="eyebrow">Install</p>
+          <h2>One binary, no runtime.</h2>
+          <p>
+            Cat198x is a single self-contained binary with no runtime
+            dependencies &mdash; a prebuilt download on GitHub Releases, or build
+            it from source with Rust. Run <code>cat198x doctor</code> to confirm
+            the install, then point it at your DATs and ROMs.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="https://github.com/cat198x/cat198x/releases">Download releases</a>{' '}
+            <a class="button secondary" href="https://github.com/cat198x/cat198x">Source</a>
+          </div>
+        </div>
+        <pre class="install-code"><code><span class="c"># build from source</span>
+git clone https://github.com/cat198x/cat198x
+cd cat198x && cargo install --path .
+
+<span class="c"># verify, then start a catalogue</span>
+cat198x doctor
+cat198x init</code></pre>
+      </div>
+    </section>
+
+    <section class="container principles" aria-label="How Cat198x works">
+      <article>
+        <p class="eyebrow">Plan before apply</p>
+        <h3>Nothing moves until you say so.</h3>
+        <p>
+          Every reorganisation is written to a plan you inspect first, applied in
+          a single transaction, and reversible from a rollback log. There is no
+          silent in-place mutation and nothing is ever lost.
+        </p>
+      </article>
+      <article>
+        <p class="eyebrow">Content-addressed</p>
+        <h3>Identified by what it is.</h3>
+        <p>
+          Files are matched by content hash &mdash; SHA-1, with CRC32 and MD5
+          &mdash; not by name, so a renamed or re-compressed ROM is still
+          recognised, and headered formats and MAME merge modes are understood.
+        </p>
+      </article>
+      <article>
+        <p class="eyebrow">Agent-native</p>
+        <h3>A CLI and an MCP surface.</h3>
+        <p>
+          The full workflow is a scriptable command line, and an MCP interface
+          lets tools and agents drive scanning, status, and planning directly
+          &mdash; the same operations, one machine-readable surface.
+        </p>
+      </article>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .hero {
+    border-bottom: 1px solid var(--line);
+    background:
+      linear-gradient(135deg, rgba(11, 110, 105, 0.11), transparent 42%),
+      var(--paper);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+    gap: 4rem;
+    align-items: center;
+    padding-block: 4.5rem;
+  }
+
+  h1 {
+    margin: 0;
+    color: var(--ink);
+    font-size: clamp(3.5rem, 11vw, 8rem);
+    line-height: 0.86;
+  }
+
+  .lede {
+    max-width: 640px;
+    margin: 1.4rem 0 0;
+    font-size: clamp(1.15rem, 2vw, 1.5rem);
+    line-height: 1.48;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .button {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px;
+    padding: 0 1rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .primary {
+    background: var(--accent);
+    color: white;
+  }
+
+  .secondary {
+    background: var(--panel);
+    color: var(--ink);
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .primary:hover {
+      background: var(--accent-strong);
+      color: white;
+    }
+    .secondary:hover {
+      color: var(--accent-strong);
+      box-shadow: inset 0 0 0 1px var(--accent);
+    }
+  }
+
+  /* Terminal panel */
+  .terminal {
+    overflow: hidden;
+    border-radius: 10px;
+    background: var(--code-bg);
+    box-shadow: var(--shadow-md);
+  }
+
+  .terminal-bar {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .terminal-bar span {
+    width: 0.72rem;
+    height: 0.72rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  .terminal pre {
+    margin: 0;
+    padding: 1.25rem 1.35rem;
+    background: transparent;
+    box-shadow: none;
+    font-size: 0.88rem;
+    line-height: 1.7;
+  }
+
+  .terminal .c {
+    color: #6f7c8a;
+  }
+
+  .terminal .o {
+    color: #5fd0a6;
+  }
+
+  .terminal .w {
+    color: #e0a458;
+  }
+
+  /* Sections */
+  .section-head {
+    max-width: 760px;
+  }
+
+  .why,
+  .how {
+    padding-top: 4.5rem;
+  }
+
+  .section-head h2,
+  .install-grid h2 {
+    margin: 0;
+    color: var(--ink);
+    font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+    line-height: 1.1;
+  }
+
+  .section-lede {
+    margin-top: 1rem;
+    max-width: 760px;
+    font-size: 1.05rem;
+    line-height: 1.55;
+  }
+
+  /* Steps */
+  .step-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 2.25rem;
+  }
+
+  .step {
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    background: var(--panel);
+    box-shadow: inset 0 0 0 1px var(--line), var(--shadow-sm);
+  }
+
+  .step-n {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent-strong);
+  }
+
+  .step h3 {
+    margin: 0.4rem 0 0.6rem;
+    color: var(--ink);
+    font-size: 1.15rem;
+  }
+
+  .step p {
+    margin: 0;
+    font-size: 0.96rem;
+    line-height: 1.55;
+  }
+
+  .dats-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    margin-top: 2rem;
+    color: var(--ink-muted);
+    font-size: 0.98rem;
+  }
+
+  .chips {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .chip {
+    display: inline-flex;
+    min-height: 2rem;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0 0.8rem;
+    background: var(--panel);
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+
+  .install-band {
+    margin-top: 4.5rem;
+    border-block: 1px solid var(--line);
+    padding-block: 4rem;
+    background: var(--paper-strong);
+  }
+
+  .install-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.85fr);
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .install-grid p {
+    margin: 1rem 0 0;
+    font-size: 1.02rem;
+    line-height: 1.55;
+  }
+
+  .install-grid p code {
+    color: var(--accent-strong);
+    font-size: 0.9em;
+  }
+
+  .install-code {
+    margin: 0;
+    font-size: 0.86rem;
+    line-height: 1.7;
+  }
+
+  .install-code code {
+    color: var(--code-ink);
+  }
+
+  .install-code .c {
+    color: #6f7c8a;
+  }
+
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2.5rem;
+    padding-block: 4.5rem;
+  }
+
+  .principles h3 {
+    margin: 0 0 0.6rem;
+    color: var(--ink);
+    font-size: 1.25rem;
+    line-height: 1.2;
+  }
+
+  .principles p {
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid,
+    .install-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .hero-grid {
+      padding-block: 3rem;
+    }
+  }
+</style>
