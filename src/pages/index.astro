@@ -162,7 +162,7 @@ cat198x init</code></pre>
   .hero {
     border-bottom: 1px solid var(--line);
     background:
-      linear-gradient(135deg, rgba(11, 110, 105, 0.11), transparent 42%),
+      linear-gradient(135deg, color-mix(in oklab, var(--h-project-cat) 11%, transparent), transparent 42%),
       var(--paper);
   }
 
@@ -261,7 +261,10 @@ cat198x init</code></pre>
   }
 
   .terminal .c {
-    color: #6f7c8a;
+    /* #6f7c8a measured 4.12:1 on the old --code-bg and 3.80:1 on the kit's
+     * lighter one, both under the 4.5:1 floor. #8b97a5 is the same blue-grey
+     * at 5.45:1 light and 6.48:1 dark. */
+    color: #8b97a5;
   }
 
   .terminal .o {
@@ -398,7 +401,8 @@ cat198x init</code></pre>
   }
 
   .install-code .c {
-    color: #6f7c8a;
+    /* Same correction as .terminal .c above. */
+    color: #8b97a5;
   }
 
   .principles {
