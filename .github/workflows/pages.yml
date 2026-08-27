@@ -48,6 +48,9 @@ jobs:
   deploy:
     name: Deploy GitHub Pages
     needs: build
+    # A pull request gets the build above and stops there. Deploying one
+    # would publish an unmerged branch to the live site.
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
