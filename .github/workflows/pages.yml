@@ -1,6 +1,11 @@
 name: Pages
 
 on:
+  # Without this the build only runs once a merge has already landed on main,
+  # and a pull request reports "no checks" -- which reads like nothing needed
+  # checking rather than nothing was checked. A sibling site learned this the
+  # expensive way: a green-looking PR turned main red on merge.
+  pull_request:
   push:
     branches:
       - main
@@ -43,6 +48,9 @@ jobs:
   deploy:
     name: Deploy GitHub Pages
     needs: build
+    # A pull request gets the build above and stops there. Deploying one
+    # would publish an unmerged branch to the live site.
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

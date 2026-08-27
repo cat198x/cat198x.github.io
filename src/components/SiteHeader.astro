@@ -1,4 +1,6 @@
 ---
+import Plate from '@198x-ui/components/Plate.astro';
+
 const nav = [
   { href: '/#why', label: 'Why' },
   { href: '/#how', label: 'How it works' },
@@ -9,10 +11,7 @@ const nav = [
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href="/" aria-label="Cat198x home">
-      <span class="mark" aria-hidden="true">C</span>
-      <span>Cat198x</span>
-    </a>
+    <Plate prefix="cat" project="cat" size={20} href="/" />
     <nav aria-label="Primary navigation">
       {nav.map((item) => (
         <>
@@ -29,7 +28,7 @@ const nav = [
     top: 0;
     z-index: 10;
     border-bottom: 1px solid var(--line);
-    background: rgba(248, 247, 242, 0.92);
+    background: color-mix(in oklab, var(--paper) 92%, transparent);
     backdrop-filter: blur(14px);
   }
 
@@ -39,28 +38,6 @@ const nav = [
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-  }
-
-  .brand {
-    display: inline-flex;
-    min-height: 44px;
-    align-items: center;
-    gap: 0.65rem;
-    color: var(--ink);
-    font-weight: 760;
-    text-decoration: none;
-  }
-
-  .mark {
-    display: inline-grid;
-    width: 2rem;
-    height: 2rem;
-    place-items: center;
-    border-radius: 6px;
-    background: var(--ink);
-    color: var(--paper-strong);
-    font-family: var(--font-mono);
-    font-size: 0.95rem;
   }
 
   nav {
@@ -85,7 +62,7 @@ const nav = [
 
   @media (hover: hover) and (pointer: fine) {
     nav a:hover {
-      background: rgba(11, 110, 105, 0.08);
+      background: var(--accent-soft);
       color: var(--accent-strong);
     }
   }
