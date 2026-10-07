@@ -106,19 +106,19 @@ const dats = ['No-Intro', 'Redump', 'MAME', 'FinalBurn Neo'];
           <p class="eyebrow">Install</p>
           <h2>One binary, no runtime.</h2>
           <p>
-            Cat198x is a single self-contained binary with no runtime
-            dependencies &mdash; a prebuilt download on GitHub Releases, or build
-            it from source with Rust. Run <code>cat198x doctor</code> to confirm
-            the install, then point it at your DATs and ROMs.
+            Install with Homebrew on macOS (Apple silicon or Intel) and Linux
+            (ARM64 or x86-64). Prebuilt archives also cover Windows x86-64;
+            no Rust toolchain is needed. Run <code>cat198x doctor</code> to
+            check the install, then point it at your DATs and ROMs. You can
+            also build from source with Rust.
           </p>
           <div class="actions">
             <a class="button primary" href="https://github.com/cat198x/cat198x/releases">Download releases</a>{' '}
             <a class="button secondary" href="https://github.com/cat198x/cat198x">Source</a>
           </div>
         </div>
-        <pre class="install-code"><code><span class="c"># build from source</span>
-git clone https://github.com/cat198x/cat198x
-cd cat198x && cargo install --path .
+        <pre class="install-code" tabindex="0"><code><span class="c"># macOS or Linux with Homebrew</span>
+brew install cat198x/tap/cat198x
 
 <span class="c"># verify, then start a catalogue</span>
 cat198x doctor
